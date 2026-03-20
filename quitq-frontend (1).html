@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuitQ — Shop Smart. Shop Fast.</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E84D0E;
+  --primary-light: #FFF0EB;
+  --navy: #1A1D2E;
+  --navy-light: #2D3250;
+  --green: #00C896;
+  --amber: #FFB800;
+  --red: #FF3B3B;
+  --bg: #F7F8FC;
+  --surface: #FFFFFF;
+  --border: #E4E7EF;
+  --text: #1A1D2E;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-hover: 0 8px 32px rgba(255,107,53,0.18);
+  --shadow-modal: 0 8px 40px rgba(0,0,0,0.18);
+  --radius-btn: 10px;
+  --radius-card: 16px;
+  --radius-modal: 20px;
+  --radius-pill: 999px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 99px; }
+
+/* ===== PAGE SYSTEM ===== */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ===== NAV ===== */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 24px;
+  height: 68px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+}
+
+.nav-logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 26px; font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -1px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.nav-logo span { color: #fff; }
+
+.nav-search {
+  flex: 1; max-width: 600px;
+  display: flex; align-items: center;
+  background: #fff;
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+.nav-search:focus-within { border-color: var(--primary); }
+
+.nav-search select {
+  background: var(--bg);
+  border: none; border-right: 1px solid var(--border);
+  padding: 0 12px; height: 40px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; color: var(--text);
+  cursor: pointer; outline: none;
+}
+
+.nav-search input {
+  flex: 1; border: none; outline: none;
+  padding: 0 14px; height: 40px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+}
+
+.nav-search button {
+  background: var(--primary);
+  border: none; cursor: pointer;
+  padding: 0 18px; height: 40px;
+  color: #fff; font-size: 18px;
+  transition: background 0.2s;
+}
+.nav-search button:hover { background: var(--primary-dark); }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: transparent; border: none;
+  color: #fff; cursor: pointer;
+  padding: 8px 14px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  transition: background 0.2s;
+  position: relative;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.1); }
+.nav-btn .icon { font-size: 20px; }
+.nav-btn .label { font-size: 13px; line-height: 1.1; }
+.nav-btn .sub { font-size: 11px; color: var(--text-muted); }
+
+.cart-badge {
+  position: absolute; top: 4px; right: 8px;
+  background: var(--primary); color: #fff;
+  font-size: 10px; font-weight: 700;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ===== CATEGORY BAR ===== */
+.cat-bar {
+  background: var(--navy-light);
+  display: flex; align-items: center; gap: 0;
+  padding: 0 40px;
+  overflow-x: auto;
+}
+.cat-bar::-webkit-scrollbar { height: 0; }
+
+.cat-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 18px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+.cat-item:hover, .cat-item.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: rgba(255,107,53,0.08);
+}
+.cat-item span { font-size: 18px; }
+
+/* ===== HERO BANNER ===== */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, #3D405B 100%);
+  padding: 0 40px;
+  display: flex; align-items: center;
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(255,107,53,0.15) 0%, transparent 60%);
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 500px; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,107,53,0.2);
+  color: var(--primary);
+  border: 1px solid rgba(255,107,53,0.3);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 12px; font-weight: 600;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.6s ease;
+}
+
+.hero h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 52px; font-weight: 800;
+  color: #fff; line-height: 1.1;
+  margin-bottom: 16px;
+  animation: fadeInUp 0.6s ease 0.1s both;
+}
+.hero h1 em { color: var(--primary); font-style: normal; }
+
+.hero p {
+  color: rgba(255,255,255,0.7);
+  font-size: 16px; line-height: 1.6;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.6s ease 0.2s both;
+}
+
+.hero-btns {
+  display: flex; gap: 12px;
+  animation: fadeInUp 0.6s ease 0.3s both;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff; border: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #fff; border: 2px solid rgba(255,255,255,0.3);
+  padding: 14px 28px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+
+.hero-visual {
+  position: absolute; right: 40px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; gap: 16px; align-items: flex-end;
+  animation: fadeInRight 0.8s ease 0.2s both;
+}
+
+.hero-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+.hero-card .hc-emoji { font-size: 48px; margin-bottom: 8px; }
+.hero-card .hc-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px; font-weight: 700;
+  color: var(--primary);
+}
+.hero-card .hc-name { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+.hero-card .hc-discount {
+  background: var(--green);
+  color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  margin-top: 8px; display: inline-block;
+}
+
+/* ===== SECTION ===== */
+.section { padding: 48px 40px; }
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.section-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 26px; font-weight: 700;
+}
+.section-title span { color: var(--primary); }
+.view-all {
+  color: var(--primary);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; background: none;
+  display: flex; align-items: center; gap: 4px;
+}
+.view-all:hover { text-decoration: underline; }
+
+/* ===== CATEGORIES GRID ===== */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.cat-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: var(--shadow-card);
+  border: 2px solid transparent;
+}
+.cat-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.cat-card .cat-icon { font-size: 40px; margin-bottom: 12px; }
+.cat-card .cat-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+}
+.cat-card .cat-count {
+  font-size: 12px; color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ===== PRODUCT GRID ===== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.product-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: all 0.25s;
+  border: 2px solid transparent;
+  position: relative;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary);
+}
+
+.product-img {
+  height: 220px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 80px;
+  position: relative;
+  overflow: hidden;
+}
+.product-img.bg1 { background: linear-gradient(135deg, #FFF0EB, #FFE4D6); }
+.product-img.bg2 { background: linear-gradient(135deg, #EBF5FF, #D6EAFF); }
+.product-img.bg3 { background: linear-gradient(135deg, #EBFFF5, #D6FFE8); }
+.product-img.bg4 { background: linear-gradient(135deg, #F5EBFF, #E8D6FF); }
+
+.discount-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--red);
+  color: #fff; font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: var(--radius-pill);
+}
+
+.wishlist-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: #fff;
+  border: none; border-radius: 50%;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: all 0.2s;
+  opacity: 0;
+}
+.product-card:hover .wishlist-btn { opacity: 1; }
+.wishlist-btn:hover { transform: scale(1.1); }
+
+.product-info { padding: 16px; }
+.product-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text); margin-bottom: 4px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.product-seller { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+
+.product-rating {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 10px;
+}
+.stars {
+  background: var(--green);
+  color: #fff; font-size: 12px; font-weight: 700;
+  padding: 2px 7px; border-radius: var(--radius-pill);
+  display: flex; align-items: center; gap: 3px;
+}
+.rating-count { font-size: 12px; color: var(--text-muted); }
+
+.product-price { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.price-current {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px; font-weight: 700;
+  color: var(--text);
+}
+.price-original {
+  font-size: 13px; color: var(--text-muted);
+  text-decoration: line-through;
+}
+.price-save { font-size: 12px; color: var(--green); font-weight: 600; }
+
+.add-cart-btn {
+  width: 100%; background: var(--primary-light);
+  color: var(--primary); border: 2px solid var(--primary);
+  padding: 10px; border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.add-cart-btn:hover {
+  background: var(--primary); color: #fff;
+}
+
+/* ===== DEAL SECTION ===== */
+.deal-section {
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  margin: 0 40px;
+  border-radius: 24px;
+  padding: 40px;
+  display: flex; gap: 40px; align-items: center;
+}
+
+.deal-info { flex: 0 0 280px; }
+.deal-tag {
+  background: var(--primary);
+  color: #fff; font-size: 12px; font-weight: 700;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  display: inline-block; margin-bottom: 16px;
+}
+.deal-info h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 32px; font-weight: 800;
+  color: #fff; margin-bottom: 12px;
+}
+.deal-timer {
+  display: flex; gap: 8px; margin-top: 20px;
+}
+.timer-block {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 12px 16px; text-align: center;
+}
+.timer-block .t-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px; font-weight: 700;
+  color: var(--primary);
+}
+.timer-block .t-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+.deal-products { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.deal-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-card);
+  padding: 20px; text-align: center;
+  cursor: pointer; transition: all 0.2s;
+}
+.deal-card:hover { background: rgba(255,255,255,0.12); transform: translateY(-3px); }
+.deal-card .d-emoji { font-size: 52px; margin-bottom: 12px; }
+.deal-card .d-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+.deal-card .d-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px; color: var(--primary); font-weight: 700;
+}
+.deal-card .d-original { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: line-through; }
+.deal-card .d-off {
+  background: var(--green); color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: var(--radius-pill);
+  display: inline-block; margin-top: 8px;
+}
+
+/* ===== BANNER STRIP ===== */
+.banner-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; padding: 40px;
+}
+.banner-item {
+  border-radius: var(--radius-card);
+  padding: 24px 28px;
+  display: flex; align-items: center; gap: 16px;
+  cursor: pointer; transition: transform 0.2s;
+}
+.banner-item:hover { transform: translateY(-3px); }
+.banner-item.orange { background: linear-gradient(135deg, #FF6B35, #FF8C5A); }
+.banner-item.navy { background: linear-gradient(135deg, #1A1D2E, #2D3250); }
+.banner-item.green { background: linear-gradient(135deg, #00C896, #00A87D); }
+.banner-item .b-icon { font-size: 48px; }
+.banner-item .b-text h3 { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; color: #fff; }
+.banner-item .b-text p { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.7);
+  padding: 48px 40px 24px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px; margin-bottom: 40px;
+}
+.footer-brand .logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 28px; font-weight: 800;
+  color: var(--primary); margin-bottom: 14px;
+}
+.footer-brand .logo span { color: #fff; }
+.footer-brand p { font-size: 14px; line-height: 1.7; max-width: 280px; }
+.footer-col h4 { color: #fff; font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { color: rgba(255,255,255,0.6); font-size: 14px; text-decoration: none; transition: color 0.2s; cursor: pointer; }
+.footer-col ul li a:hover { color: var(--primary); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom p { font-size: 13px; }
+.payment-icons { display: flex; gap: 8px; }
+.pay-icon {
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px; font-weight: 700;
+  color: #fff;
+}
+
+/* ===== AUTH PAGES ===== */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+}
+
+.auth-left {
+  flex: 0 0 480px;
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 60%, #3D405B 100%);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 60px;
+  position: relative; overflow: hidden;
+}
+.auth-left::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,107,53,0.2), transparent);
+  border-radius: 50%;
+  top: -100px; right: -100px;
+}
+.auth-left::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0,200,150,0.1), transparent);
+  border-radius: 50%;
+  bottom: -50px; left: -50px;
+}
+
+.auth-brand {
+  position: relative; z-index: 1; text-align: center;
+}
+.auth-brand .logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 42px; font-weight: 800;
+  color: var(--primary); margin-bottom: 8px;
+}
+.auth-brand .logo span { color: #fff; }
+.auth-brand .tagline {
+  color: rgba(255,255,255,0.7);
+  font-size: 16px; margin-bottom: 48px;
+}
+
+.auth-illustration {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  width: 100%;
+}
+.auth-ill-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-card);
+  padding: 20px; text-align: center;
+}
+.auth-ill-card .emoji { font-size: 36px; margin-bottom: 8px; }
+.auth-ill-card .label { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+.auth-features {
+  position: relative; z-index: 1;
+  margin-top: 32px; width: 100%;
+}
+.auth-feature {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+}
+.auth-feature .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--primary); flex-shrink: 0;
+}
+.auth-feature p { color: rgba(255,255,255,0.8); font-size: 14px; }
+
+.auth-right {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 80px;
+  background: var(--surface);
+}
+
+.auth-form-box { width: 100%; max-width: 440px; }
+.auth-form-box h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 32px; font-weight: 700;
+  margin-bottom: 8px;
+}
+.auth-form-box .auth-sub {
+  color: var(--text-secondary);
+  font-size: 15px; margin-bottom: 36px;
+}
+.auth-form-box .auth-sub a {
+  color: var(--primary); font-weight: 600;
+  text-decoration: none; cursor: pointer;
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--text); margin-bottom: 8px;
+}
+.form-control {
+  width: 100%; padding: 13px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+  background: var(--bg);
+}
+.form-control:focus { border-color: var(--primary); background: #fff; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.pwd-wrapper { position: relative; }
+.pwd-toggle {
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  cursor: pointer; font-size: 18px;
+  color: var(--text-muted);
+}
+
+.strength-bar {
+  display: flex; gap: 4px; margin-top: 8px;
+}
+.strength-seg {
+  flex: 1; height: 4px; border-radius: 99px;
+  background: var(--border); transition: background 0.3s;
+}
+.strength-seg.weak { background: var(--red); }
+.strength-seg.fair { background: var(--amber); }
+.strength-seg.strong { background: var(--green); }
+
+.strength-label { font-size: 12px; margin-top: 4px; color: var(--text-muted); }
+
+.radio-group { display: flex; gap: 12px; }
+.radio-option {
+  flex: 1;
+  display: flex; align-items: center; gap: 8px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 12px 16px;
+  cursor: pointer; transition: all 0.2s;
+  font-size: 14px;
+}
+.radio-option input { accent-color: var(--primary); }
+.radio-option:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.checkbox-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+.checkbox-row input { accent-color: var(--primary); margin-top: 2px; flex-shrink: 0; }
+.checkbox-row a { color: var(--primary); text-decoration: none; font-weight: 500; }
+
+.btn-auth {
+  width: 100%;
+  background: var(--primary); color: #fff;
+  border: none; padding: 15px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  margin-bottom: 20px;
+}
+.btn-auth:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; color: var(--text-muted);
+  font-size: 13px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--border);
+}
+
+.social-btns { display: flex; gap: 12px; }
+.social-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 12px;
+  background: #fff; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  transition: all 0.2s;
+}
+.social-btn:hover { border-color: var(--primary); }
+.forgot-link {
+  display: flex; justify-content: flex-end;
+  margin-top: -12px; margin-bottom: 20px;
+}
+.forgot-link a { color: var(--primary); font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+
+/* ===== PRODUCT LISTING ===== */
+.listing-layout { display: flex; min-height: calc(100vh - 68px - 46px); }
+.sidebar {
+  flex: 0 0 260px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px;
+  position: sticky; top: 114px;
+  height: fit-content;
+}
+.sidebar h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px; font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  display: flex; justify-content: space-between;
+}
+.sidebar h3 span { color: var(--primary); font-size: 13px; font-weight: 500; cursor: pointer; }
+
+.filter-group { margin-bottom: 24px; }
+.filter-group h4 {
+  font-size: 13px; font-weight: 700;
+  color: var(--text);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.price-range { padding: 0 4px; }
+.price-values { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.price-values span {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; font-weight: 700; color: var(--primary);
+}
+input[type=range] {
+  width: 100%; accent-color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.filter-check {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px; cursor: pointer;
+  font-size: 14px;
+}
+.filter-check input { accent-color: var(--primary); }
+.filter-check .count {
+  margin-left: auto;
+  background: var(--bg);
+  font-size: 11px; color: var(--text-muted);
+  padding: 2px 8px; border-radius: var(--radius-pill);
+}
+
+.star-filter { display: flex; flex-direction: column; gap: 8px; }
+.star-option {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; padding: 6px 10px;
+  border-radius: 8px; transition: background 0.2s;
+  font-size: 14px;
+}
+.star-option:hover { background: var(--bg); }
+.star-option input { accent-color: var(--primary); }
+.star-option .stars-row { color: var(--amber); font-size: 14px; }
+
+.listing-main { flex: 1; padding: 24px; }
+.listing-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.listing-topbar h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 700;
+}
+.listing-topbar span { color: var(--text-muted); font-size: 14px; font-weight: 400; }
+
+.sort-control {
+  display: flex; align-items: center; gap: 10px;
+}
+.sort-control label { font-size: 13px; color: var(--text-muted); }
+.sort-control select {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 8px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; outline: none;
+  cursor: pointer;
+}
+.sort-control select:focus { border-color: var(--primary); }
+
+.active-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-tag {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--primary-light);
+  border: 1px solid rgba(255,107,53,0.3);
+  color: var(--primary);
+  font-size: 13px; font-weight: 500;
+  padding: 5px 12px; border-radius: var(--radius-pill);
+}
+.filter-tag button {
+  background: none; border: none; cursor: pointer;
+  color: var(--primary); font-size: 14px;
+  line-height: 1; padding: 0;
+}
+
+/* ===== CART PAGE ===== */
+.cart-layout { display: flex; gap: 24px; padding: 32px 40px; align-items: flex-start; }
+.cart-main { flex: 1; }
+.cart-sidebar { flex: 0 0 340px; }
+
+.page-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 28px; font-weight: 700;
+  margin-bottom: 24px;
+}
+.page-title span { color: var(--primary); font-size: 16px; font-weight: 500; }
+
+.cart-item {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  display: flex; gap: 16px; align-items: flex-start;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+.cart-item-img {
+  width: 100px; height: 100px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; flex-shrink: 0;
+}
+.cart-item-img.bg1 { background: linear-gradient(135deg, #FFF0EB, #FFE4D6); }
+.cart-item-img.bg2 { background: linear-gradient(135deg, #EBF5FF, #D6EAFF); }
+.cart-item-img.bg3 { background: linear-gradient(135deg, #EBFFF5, #D6FFE8); }
+
+.cart-item-info { flex: 1; }
+.cart-item-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.cart-item-seller { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.cart-item-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 20px; font-weight: 700; color: var(--text);
+  margin-bottom: 12px;
+}
+.cart-item-price .orig {
+  font-size: 14px; color: var(--text-muted);
+  text-decoration: line-through; margin-left: 8px;
+}
+
+.qty-control {
+  display: flex; align-items: center; gap: 0;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-btn);
+  width: fit-content;
+}
+.qty-btn {
+  background: none; border: none;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 18px;
+  transition: background 0.15s;
+}
+.qty-btn:hover { background: var(--bg); }
+.qty-num {
+  padding: 0 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 15px; font-weight: 700;
+  border-left: 2px solid var(--border);
+  border-right: 2px solid var(--border);
+}
+
+.cart-item-actions { display: flex; gap: 10px; margin-top: 12px; }
+.cart-action-btn {
+  background: none; border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; padding: 6px 12px;
+  border-radius: 8px; transition: background 0.2s;
+}
+.cart-action-btn.remove { color: var(--red); }
+.cart-action-btn.remove:hover { background: #FFF0F0; }
+.cart-action-btn.save { color: var(--primary); }
+.cart-action-btn.save:hover { background: var(--primary-light); }
+
+.order-summary {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  position: sticky; top: 100px;
+}
+.order-summary h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px; font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+.summary-row {
+  display: flex; justify-content: space-between;
+  margin-bottom: 14px; font-size: 14px;
+}
+.summary-row.total {
+  font-weight: 700; font-size: 18px;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 2px solid var(--border);
+}
+.summary-row .save-text { color: var(--green); font-size: 12px; }
+.summary-row .orig-price { text-decoration: line-through; color: var(--text-muted); font-size: 14px; }
+
+.savings-banner {
+  background: #EBFFF5;
+  border: 1px solid rgba(0,200,150,0.3);
+  color: var(--green);
+  font-size: 13px; font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 10px; margin: 16px 0;
+  text-align: center;
+}
+
+.checkout-btn {
+  width: 100%;
+  background: var(--primary); color: #fff;
+  border: none; padding: 16px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 8px;
+}
+.checkout-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ===== SELLER DASHBOARD ===== */
+.dashboard-layout { display: flex; min-height: 100vh; }
+
+.dash-sidebar {
+  flex: 0 0 240px;
+  background: var(--navy);
+  display: flex; flex-direction: column;
+}
+.dash-brand {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.dash-brand .logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--primary);
+}
+.dash-brand .logo span { color: #fff; }
+.dash-brand .role {
+  font-size: 12px; color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+}
+
+.dash-nav { padding: 16px 12px; flex: 1; }
+.dash-nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.65);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; margin-bottom: 4px;
+  transition: all 0.2s;
+}
+.dash-nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.dash-nav-item.active {
+  background: var(--primary); color: #fff;
+}
+.dash-nav-item .nav-icon { font-size: 20px; width: 20px; }
+
+.dash-main { flex: 1; background: var(--bg); overflow: auto; }
+.dash-header {
+  background: var(--surface);
+  padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.dash-header h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px; font-weight: 700;
+}
+.dash-user {
+  display: flex; align-items: center; gap: 12px;
+}
+.dash-avatar {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 16px;
+}
+.dash-user-name { font-size: 14px; font-weight: 600; }
+.dash-user-role { font-size: 12px; color: var(--text-muted); }
+
+.dash-content { padding: 32px; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
+.kpi-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  position: relative; overflow: hidden;
+}
+.kpi-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.kpi-card.orange::after { background: var(--primary); }
+.kpi-card.green::after { background: var(--green); }
+.kpi-card.amber::after { background: var(--amber); }
+.kpi-card.red::after { background: var(--red); }
+
+.kpi-icon { font-size: 32px; margin-bottom: 12px; }
+.kpi-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.kpi-label { font-size: 13px; color: var(--text-muted); }
+.kpi-trend {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 8px; font-size: 12px; font-weight: 600;
+}
+.kpi-trend.up { color: var(--green); }
+.kpi-trend.down { color: var(--red); }
+
+.dash-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 24px;
+}
+.dash-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.dash-card-header h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px; font-weight: 700;
+}
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left; padding: 10px 16px;
+  font-size: 12px; font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--bg); }
+
+.product-thumb-cell { display: flex; align-items: center; gap: 12px; }
+.thumb-mini {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.thumb-mini.bg1 { background: linear-gradient(135deg, #FFF0EB, #FFE4D6); }
+.thumb-mini.bg2 { background: linear-gradient(135deg, #EBF5FF, #D6EAFF); }
+.thumb-mini.bg3 { background: linear-gradient(135deg, #EBFFF5, #D6FFE8); }
+.thumb-mini.bg4 { background: linear-gradient(135deg, #F5EBFF, #E8D6FF); }
+
+.thumb-name { font-size: 14px; font-weight: 600; }
+.thumb-cat { font-size: 12px; color: var(--text-muted); }
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: var(--radius-pill);
+}
+.status-badge.active { background: #EBFFF5; color: var(--green); }
+.status-badge.pending { background: #FFF8EB; color: var(--amber); }
+.status-badge.shipped { background: #EBF5FF; color: #3B82F6; }
+.status-badge.delivered { background: #EBFFF5; color: var(--green); }
+.status-badge.inactive { background: var(--bg); color: var(--text-muted); }
+
+.action-btns { display: flex; gap: 6px; }
+.action-btn {
+  width: 32px; height: 32px;
+  border: none; border-radius: 8px;
+  cursor: pointer; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.action-btn.edit { background: var(--primary-light); }
+.action-btn.edit:hover { background: var(--primary); }
+.action-btn.delete { background: #FFF0F0; color: var(--red); }
+.action-btn.delete:hover { background: var(--red); color: #fff; }
+
+.toggle-switch {
+  width: 42px; height: 24px;
+  background: var(--border);
+  border-radius: 99px; cursor: pointer;
+  position: relative; transition: background 0.2s;
+  flex-shrink: 0;
+}
+.toggle-switch.on { background: var(--green); }
+.toggle-switch::after {
+  content: '';
+  position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  background: #fff; border-radius: 50%;
+  transition: left 0.2s;
+}
+.toggle-switch.on::after { left: 21px; }
+
+.add-product-btn {
+  background: var(--primary); color: #fff;
+  border: none; padding: 10px 20px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.add-product-btn:hover { background: var(--primary-dark); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px) translateY(-50%); }
+  to { opacity: 1; transform: translateX(0) translateY(-50%); }
+}
+
+/* ===== PAGE NAV TABS ===== */
+.demo-nav {
+  background: var(--navy-light);
+  display: flex; gap: 0; padding: 0 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  overflow-x: auto;
+}
+.demo-nav button {
+  background: none; border: none;
+  color: rgba(255,255,255,0.6);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 12px 16px; cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.demo-nav button:hover { color: #fff; }
+.demo-nav button.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+/* ===== PRODUCT LISTING (3 col) ===== */
+.listing-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ===== CHECKOUT ===== */
+.checkout-layout { max-width: 900px; margin: 0 auto; padding: 32px 40px; }
+.step-indicator {
+  display: flex; align-items: center;
+  margin-bottom: 40px;
+}
+.step {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.step-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.step.done .step-num { background: var(--green); color: #fff; }
+.step.active .step-num { background: var(--primary); color: #fff; }
+.step.pending .step-num { background: var(--border); color: var(--text-muted); }
+.step.active .step-label { color: var(--primary); }
+.step.pending .step-label { color: var(--text-muted); }
+.step-line { flex: 1; height: 2px; background: var(--border); margin: 0 16px; }
+.step-line.done { background: var(--green); }
+
+.checkout-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 20px;
+}
+.checkout-card h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px; font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.address-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.address-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 16px; cursor: pointer; transition: all 0.2s;
+  position: relative;
+}
+.address-card.selected { border-color: var(--primary); background: var(--primary-light); }
+.address-card .addr-name { font-weight: 700; margin-bottom: 4px; }
+.address-card .addr-detail { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.address-card .addr-tag {
+  background: var(--green); color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: var(--radius-pill);
+  position: absolute; top: 12px; right: 12px;
+}
+
+.payment-options { display: flex; flex-direction: column; gap: 12px; }
+.payment-option {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 16px 20px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 14px;
+}
+.payment-option:hover { border-color: var(--primary); }
+.payment-option.selected { border-color: var(--primary); background: var(--primary-light); }
+.payment-option input[type=radio] { accent-color: var(--primary); transform: scale(1.2); }
+.payment-option .pay-icon { font-size: 24px; }
+.payment-option .pay-label { font-weight: 600; font-size: 15px; }
+.payment-option .pay-sub { font-size: 12px; color: var(--text-muted); }
+
+.place-order-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none; padding: 18px;
+  border-radius: var(--radius-btn);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+}
+.place-order-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(255,107,53,0.4);
+}
+
+/* ===== RESPONSIVE HINTS ===== */
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- DEMO NAVIGATION -->
+<div class="demo-nav" id="demoNav">
+  <button class="active" onclick="showPage('home')">🏠 Home</button>
+  <button onclick="showPage('register')">📝 Register</button>
+  <button onclick="showPage('login')">🔐 Login</button>
+  <button onclick="showPage('listing')">🛍️ Product Listing</button>
+  <button onclick="showPage('cart')">🛒 Cart</button>
+  <button onclick="showPage('checkout')">💳 Checkout</button>
+  <button onclick="showPage('seller')">📊 Seller Dashboard</button>
+  <button onclick="showPage('admin')">⚙️ Admin Dashboard</button>
+</div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page active" id="page-home">
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">Quit<span>Q</span></div>
+    <div class="nav-search">
+      <select><option>All</option><option>Electronics</option><option>Fashion</option><option>Mobiles</option></select>
+      <input type="text" placeholder="Search for products, brands and more…">
+      <button>🔍</button>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn" onclick="showPage('login')">
+        <span class="icon">👤</span>
+        <div><div class="label">Login</div><div class="sub">My Account</div></div>
+      </button>
+      <button class="nav-btn">
+        <span class="icon">♡</span>
+        <div class="label">Wishlist</div>
+      </button>
+      <button class="nav-btn" onclick="showPage('cart')">
+        <span class="icon">🛒</span>
+        <div class="label">Cart</div>
+        <span class="cart-badge">3</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- CATEGORY BAR -->
+  <div class="cat-bar">
+    <div class="cat-item active"><span>⚡</span> Electronics</div>
+    <div class="cat-item"><span>👗</span> Fashion</div>
+    <div class="cat-item"><span>📱</span> Mobiles</div>
+    <div class="cat-item"><span>🛋️</span> Home & Furniture</div>
+    <div class="cat-item"><span>💄</span> Beauty</div>
+    <div class="cat-item"><span>⚽</span> Sports</div>
+    <div class="cat-item"><span>📚</span> Books</div>
+    <div class="cat-item"><span>🍳</span> Kitchen</div>
+    <div class="cat-item"><span>🎮</span> Gaming</div>
+    <div class="cat-item"><span>🚗</span> Automotive</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">⚡ Flash Sale — Up to 70% Off</div>
+      <h1>Shop <em>Smarter,</em><br>Live Better.</h1>
+      <p>Discover millions of products from trusted sellers. Fast delivery, secure payments, and unbeatable deals every day.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('listing')">Explore Deals →</button>
+        <button class="btn-outline">View Categories</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card" style="transform: rotate(-4deg);">
+        <div class="hc-emoji">📱</div>
+        <div class="hc-price">₹12,999</div>
+        <div class="hc-name">Smartphones</div>
+        <div class="hc-discount">45% OFF</div>
+      </div>
+      <div class="hero-card" style="transform: rotate(2deg); margin-bottom: 24px;">
+        <div class="hc-emoji">💻</div>
+        <div class="hc-price">₹34,990</div>
+        <div class="hc-name">Laptops</div>
+        <div class="hc-discount">30% OFF</div>
+      </div>
+      <div class="hero-card" style="transform: rotate(-2deg);">
+        <div class="hc-emoji">⌚</div>
+        <div class="hc-price">₹4,499</div>
+        <div class="hc-name">Smartwatch</div>
+        <div class="hc-discount">60% OFF</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section" style="background: var(--surface);">
+    <div class="section-header">
+      <div class="section-title">Shop by <span>Category</span></div>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card"><div class="cat-icon">⚡</div><div class="cat-name">Electronics</div><div class="cat-count">12,400+ items</div></div>
+      <div class="cat-card"><div class="cat-icon">👗</div><div class="cat-name">Fashion</div><div class="cat-count">85,200+ items</div></div>
+      <div class="cat-card"><div class="cat-icon">📱</div><div class="cat-name">Mobiles</div><div class="cat-count">3,800+ items</div></div>
+      <div class="cat-card"><div class="cat-icon">🛋️</div><div class="cat-name">Home & Furniture</div><div class="cat-count">22,000+ items</div></div>
+      <div class="cat-card"><div class="cat-icon">💄</div><div class="cat-name">Beauty</div><div class="cat-count">15,600+ items</div></div>
+      <div class="cat-card"><div class="cat-icon">⚽</div><div class="cat-name">Sports</div><div class="cat-count">9,100+ items</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURED PRODUCTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Featured <span>Products</span></div>
+      <button class="view-all" onclick="showPage('listing')">View All →</button>
+    </div>
+    <div class="product-grid">
+      <div class="product-card" onclick="showPage('listing')">
+        <div class="product-img bg1">📱<span class="discount-badge">-45%</span><button class="wishlist-btn">♡</button></div>
+        <div class="product-info">
+          <div class="product-name">Samsung Galaxy S24 Ultra 256GB Titanium</div>
+          <div class="product-seller">by Samsung Official Store</div>
+          <div class="product-rating"><span class="stars">⭐ 4.7</span><span class="rating-count">(12,840)</span></div>
+          <div class="product-price"><span class="price-current">₹89,999</span><span class="price-original">₹1,64,999</span></div>
+          <div class="price-save">You save ₹75,000</div>
+          <button class="add-cart-btn" style="margin-top:12px">+ Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card" onclick="showPage('listing')">
+        <div class="product-img bg2">💻<span class="discount-badge">-30%</span><button class="wishlist-btn">♡</button></div>
+        <div class="product-info">
+          <div class="product-name">Apple MacBook Air M3 13" 8GB RAM 256GB</div>
+          <div class="product-seller">by Apple India</div>
+          <div class="product-rating"><span class="stars">⭐ 4.9</span><span class="rating-count">(8,210)</span></div>
+          <div class="product-price"><span class="price-current">₹99,900</span><span class="price-original">₹1,14,900</span></div>
+          <div class="price-save">You save ₹15,000</div>
+          <button class="add-cart-btn" style="margin-top:12px">+ Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card" onclick="showPage('listing')">
+        <div class="product-img bg3">⌚<span class="discount-badge">-60%</span><button class="wishlist-btn">♡</button></div>
+        <div class="product-info">
+          <div class="product-name">boAt Storm Pro Smartwatch with AMOLED Display</div>
+          <div class="product-seller">by boAt Lifestyle</div>
+          <div class="product-rating"><span class="stars">⭐ 4.3</span><span class="rating-count">(24,500)</span></div>
+          <div class="product-price"><span class="price-current">₹1,999</span><span class="price-original">₹4,999</span></div>
+          <div class="price-save">You save ₹3,000</div>
+          <button class="add-cart-btn" style="margin-top:12px">+ Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card" onclick="showPage('listing')">
+        <div class="product-img bg4">🎧<span class="discount-badge">-40%</span><button class="wishlist-btn">♡</button></div>
+        <div class="product-info">
+          <div class="product-name">Sony WH-1000XM5 Wireless Noise Cancelling Headphones</div>
+          <div class="product-seller">by Sony India</div>
+          <div class="product-rating"><span class="stars">⭐ 4.8</span><span class="rating-count">(6,780)</span></div>
+          <div class="product-price"><span class="price-current">₹19,990</span><span class="price-original">₹33,990</span></div>
+          <div class="price-save">You save ₹14,000</div>
+          <button class="add-cart-btn" style="margin-top:12px">+ Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEALS -->
+  <div style="padding: 0 0 40px;">
+    <div class="deal-section">
+      <div class="deal-info">
+        <div class="deal-tag">🔥 DEAL OF THE DAY</div>
+        <h2>Don't Miss These<br>Crazy Offers!</h2>
+        <p style="color:rgba(255,255,255,0.6);font-size:14px;">Ends in:</p>
+        <div class="deal-timer">
+          <div class="timer-block"><div class="t-num" id="hours">08</div><div class="t-label">HRS</div></div>
+          <div class="timer-block"><div class="t-num" id="mins">34</div><div class="t-label">MIN</div></div>
+          <div class="timer-block"><div class="t-num" id="secs">12</div><div class="t-label">SEC</div></div>
+        </div>
+      </div>
+      <div class="deal-products">
+        <div class="deal-card"><div class="d-emoji">📷</div><div class="d-name">DSLR Camera</div><div class="d-price">₹24,999</div><div class="d-original">₹54,990</div><div class="d-off">55% OFF</div></div>
+        <div class="deal-card"><div class="d-emoji">🖥️</div><div class="d-name">4K Monitor</div><div class="d-price">₹18,499</div><div class="d-original">₹32,000</div><div class="d-off">42% OFF</div></div>
+        <div class="deal-card"><div class="d-emoji">🎮</div><div class="d-name">Gaming Console</div><div class="d-price">₹39,990</div><div class="d-original">₹49,990</div><div class="d-off">20% OFF</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANNER STRIP -->
+  <div class="banner-strip">
+    <div class="banner-item orange">
+      <div class="b-icon">🚀</div>
+      <div class="b-text"><h3>Free Delivery</h3><p>On orders above ₹499. T&C apply.</p></div>
+    </div>
+    <div class="banner-item navy">
+      <div class="b-icon">🔒</div>
+      <div class="b-text"><h3>Secure Payments</h3><p>100% safe & encrypted checkout.</p></div>
+    </div>
+    <div class="banner-item green">
+      <div class="b-icon">↩️</div>
+      <div class="b-text"><h3>Easy Returns</h3><p>30-day hassle-free return policy.</p></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Quit<span>Q</span></div>
+        <p>India's most trusted e-commerce platform. Shop from millions of products with the best prices, secure payments, and fast delivery.</p>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a>About Us</a></li><li><a>Careers</a></li><li><a>Press</a></li>
+          <li><a>Blog</a></li><li><a>Investors</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a>Payments</a></li><li><a>Shipping</a></li><li><a>Returns</a></li>
+          <li><a>FAQ</a></li><li><a>Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sell</h4>
+        <ul>
+          <li><a onclick="showPage('register')">Sell on QuitQ</a></li><li><a>Seller Hub</a></li>
+          <li><a>Seller Policies</a></li><li><a>Advertise</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 QuitQ E-Commerce Pvt. Ltd. All rights reserved.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">VISA</div>
+        <div class="pay-icon">MC</div>
+        <div class="pay-icon">UPI</div>
+        <div class="pay-icon">NET</div>
+        <div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== REGISTER PAGE ==================== -->
+<div class="page" id="page-register">
+  <div class="auth-wrapper">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="logo">Quit<span>Q</span></div>
+        <div class="tagline">Shop Smart. Shop Fast.</div>
+      </div>
+      <div class="auth-illustration">
+        <div class="auth-ill-card"><div class="emoji">📱</div><div class="label">Mobiles</div></div>
+        <div class="auth-ill-card"><div class="emoji">💻</div><div class="label">Laptops</div></div>
+        <div class="auth-ill-card"><div class="emoji">👗</div><div class="label">Fashion</div></div>
+        <div class="auth-ill-card"><div class="emoji">🛋️</div><div class="label">Furniture</div></div>
+      </div>
+      <div class="auth-features">
+        <div class="auth-feature"><div class="dot"></div><p>Access millions of products at best prices</p></div>
+        <div class="auth-feature"><div class="dot"></div><p>Track orders in real-time, anytime</p></div>
+        <div class="auth-feature"><div class="dot"></div><p>Exclusive member deals and early access</p></div>
+        <div class="auth-feature"><div class="dot"></div><p>Fast, secure & easy checkout</p></div>
+      </div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-form-box">
+        <h2>Create Account</h2>
+        <p class="auth-sub">Already a member? <a onclick="showPage('login')">Sign in here</a></p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input class="form-control" type="text" placeholder="Rahul">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input class="form-control" type="text" placeholder="Sharma">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input class="form-control" type="email" placeholder="rahul@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input class="form-control" type="tel" placeholder="+91 98765 43210">
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pwd-wrapper">
+            <input class="form-control" type="password" id="reg-pwd" placeholder="Create a strong password" oninput="updateStrength(this.value)">
+            <button class="pwd-toggle" onclick="togglePwd('reg-pwd')">👁</button>
+          </div>
+          <div class="strength-bar">
+            <div class="strength-seg" id="s1"></div>
+            <div class="strength-seg" id="s2"></div>
+            <div class="strength-seg" id="s3"></div>
+            <div class="strength-seg" id="s4"></div>
+          </div>
+          <div class="strength-label" id="strength-label">Enter a password</div>
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="gender" value="male" checked> Male</label>
+            <label class="radio-option"><input type="radio" name="gender" value="female"> Female</label>
+            <label class="radio-option"><input type="radio" name="gender" value="other"> Other</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input class="form-control" type="date">
+        </div>
+
+        <div class="form-group">
+          <label>Register as</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="role" value="buyer" checked> 🛒 Buyer</label>
+            <label class="radio-option"><input type="radio" name="role" value="seller"> 🏪 Seller</label>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" checked>
+          <span>I agree to QuitQ's <a>Terms of Service</a> and <a>Privacy Policy</a></span>
+        </div>
+
+        <button class="btn-auth" onclick="showPage('login')">Create My Account</button>
+
+        <div class="divider">or continue with</div>
+        <div class="social-btns">
+          <button class="social-btn">🔵 Google</button>
+          <button class="social-btn">🔷 Facebook</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="page" id="page-login">
+  <div class="auth-wrapper">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="logo">Quit<span>Q</span></div>
+        <div class="tagline">Welcome back!</div>
+      </div>
+      <div class="auth-illustration" style="grid-template-columns:1fr;">
+        <div class="auth-ill-card" style="text-align:left;display:flex;gap:16px;align-items:center;">
+          <div style="font-size:36px;">🔥</div>
+          <div><div style="color:#fff;font-weight:600;margin-bottom:4px;">Today's Top Deals</div><div style="color:rgba(255,255,255,0.5);font-size:13px;">Up to 70% off on 10,000+ products</div></div>
+        </div>
+        <div class="auth-ill-card" style="text-align:left;display:flex;gap:16px;align-items:center;">
+          <div style="font-size:36px;">🚀</div>
+          <div><div style="color:#fff;font-weight:600;margin-bottom:4px;">Express Delivery</div><div style="color:rgba(255,255,255,0.5);font-size:13px;">Same-day delivery in 100+ cities</div></div>
+        </div>
+        <div class="auth-ill-card" style="text-align:left;display:flex;gap:16px;align-items:center;">
+          <div style="font-size:36px;">💎</div>
+          <div><div style="color:#fff;font-weight:600;margin-bottom:4px;">QuitQ Plus</div><div style="color:rgba(255,255,255,0.5);font-size:13px;">Exclusive perks for members</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-form-box">
+        <h2>Sign In</h2>
+        <p class="auth-sub">New to QuitQ? <a onclick="showPage('register')">Create an account</a></p>
+
+        <div class="form-group">
+          <label>Email or Mobile Number</label>
+          <input class="form-control" type="text" placeholder="Enter email or phone number">
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pwd-wrapper">
+            <input class="form-control" type="password" id="login-pwd" placeholder="Enter your password">
+            <button class="pwd-toggle" onclick="togglePwd('login-pwd')">👁</button>
+          </div>
+        </div>
+
+        <div class="forgot-link"><a>Forgot Password?</a></div>
+
+        <button class="btn-auth" onclick="showPage('home')">Sign In to QuitQ</button>
+
+        <div style="margin-bottom:20px;display:flex;gap:12px;">
+          <button class="btn-auth" style="background:var(--navy);flex:1;margin-bottom:0;" onclick="showPage('seller')">Sign in as Seller</button>
+          <button class="btn-auth" style="background:#6B7280;flex:1;margin-bottom:0;" onclick="showPage('admin')">Sign in as Admin</button>
+        </div>
+
+        <div class="divider">or continue with</div>
+        <div class="social-btns">
+          <button class="social-btn">🔵 Google</button>
+          <button class="social-btn">🔷 Facebook</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PRODUCT LISTING ==================== -->
+<div class="page" id="page-listing">
+  <nav class="navbar">
+    <div class="nav-logo" onclick="showPage('home')">Quit<span>Q</span></div>
+    <div class="nav-search">
+      <select><option>Electronics</option></select>
+      <input type="text" value="Smartphones" placeholder="Search…">
+      <button>🔍</button>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn"><span class="icon">👤</span><div class="label">Account</div></button>
+      <button class="nav-btn"><span class="icon">♡</span><div class="label">Wishlist</div></button>
+      <button class="nav-btn" onclick="showPage('cart')"><span class="icon">🛒</span><div class="label">Cart</div><span class="cart-badge">3</span></button>
+    </div>
+  </nav>
+  <div class="listing-layout">
+    <div class="sidebar">
+      <h3>Filters <span>Clear All</span></h3>
+      <div class="filter-group">
+        <h4>Price Range</h4>
+        <div class="price-range">
+          <div class="price-values"><span>₹5,000</span><span>₹1,50,000</span></div>
+          <input type="range" min="5000" max="150000" value="80000">
+        </div>
+      </div>
+      <div class="filter-group">
+        <h4>Brand</h4>
+        <label class="filter-check"><input type="checkbox" checked> Samsung <span class="count">1,240</span></label>
+        <label class="filter-check"><input type="checkbox"> Apple <span class="count">860</span></label>
+        <label class="filter-check"><input type="checkbox"> OnePlus <span class="count">540</span></label>
+        <label class="filter-check"><input type="checkbox"> Xiaomi <span class="count">1,820</span></label>
+        <label class="filter-check"><input type="checkbox"> Realme <span class="count">930</span></label>
+        <label class="filter-check"><input type="checkbox"> Vivo <span class="count">680</span></label>
+      </div>
+      <div class="filter-group">
+        <h4>Customer Rating</h4>
+        <div class="star-filter">
+          <label class="star-option"><input type="radio" name="rating"> <span class="stars-row">⭐⭐⭐⭐⭐</span> & above</label>
+          <label class="star-option"><input type="radio" name="rating" checked> <span class="stars-row">⭐⭐⭐⭐</span> & above</label>
+          <label class="star-option"><input type="radio" name="rating"> <span class="stars-row">⭐⭐⭐</span> & above</label>
+        </div>
+      </div>
+      <div class="filter-group">
+        <h4>Availability</h4>
+        <label class="filter-check"><input type="checkbox" checked> In Stock Only</label>
+      </div>
+    </div>
+    <div class="listing-main">
+      <div class="listing-topbar">
+        <h2>Smartphones <span>— 2,840 results found</span></h2>
+        <div class="sort-control">
+          <label>Sort by:</label>
+          <select><option>Relevance</option><option>Price: Low to High</option><option>Price: High to Low</option><option>Newest First</option><option>Rating</option></select>
+        </div>
+      </div>
+      <div class="active-filters">
+        <div class="filter-tag">Samsung <button>×</button></div>
+        <div class="filter-tag">4★ & above <button>×</button></div>
+        <div class="filter-tag">In Stock <button>×</button></div>
+      </div>
+      <div class="listing-product-grid">
+        <div class="product-card" onclick="showPage('cart')"><div class="product-img bg1" style="height:180px">📱<span class="discount-badge">-45%</span><button class="wishlist-btn">♡</button></div><div class="product-info"><div class="product-name">Samsung Galaxy S24 Ultra 256GB Titanium Black</div><div class="product-seller">Samsung Official</div><div class="product-rating"><span class="stars">⭐ 4.7</span><span class="rating-count">(12,840)</span></div><div class="product-price"><span class="price-current">₹89,999</span><span class="price-original">₹1,64,999</span></div><button class="add-cart-btn">+ Add to Cart</button></div></div>
+        <div class="product-card" onclick="showPage('cart')"><div class="product-img bg2" style="height:180px">📱<span class="discount-badge">-20%</span><button class="wishlist-btn">♡</button></div><div class="product-info"><div class="product-name">Samsung Galaxy A55 5G 128GB Awesome Iceblue</div><div class="product-seller">Samsung Official</div><div class="product-rating"><span class="stars">⭐ 4.4</span><span class="rating-count">(8,200)</span></div><div class="product-price"><span class="price-current">₹29,999</span><span class="price-original">₹37,999</span></div><button class="add-cart-btn">+ Add to Cart</button></div></div>
+        <div class="product-card" onclick="showPage('cart')"><div class="product-img bg3" style="height:180px">📱<span class="discount-badge">-10%</span><button class="wishlist-btn">♡</button></div><div class="product-info"><div class="product-name">Samsung Galaxy Z Fold 6 512GB Shadow Grey</div><div class="product-seller">Samsung Official</div><div class="product-rating"><span class="stars">⭐ 4.6</span><span class="rating-count">(3,400)</span></div><div class="product-price"><span class="price-current">₹1,44,999</span><span class="price-original">₹1,61,999</span></div><button class="add-cart-btn">+ Add to Cart</button></div></div>
+        <div class="product-card"><div class="product-img bg4" style="height:180px">📱<span class="discount-badge">-55%</span><button class="wishlist-btn">♡</button></div><div class="product-info"><div class="product-name">Samsung Galaxy M14 5G 128GB Arctic Blue</div><div class="product-seller">Samsung Official</div><div class="product-rating"><span class="stars">⭐ 4.2</span><span class="rating-count">(18,600)</span></div><div class="product-price"><span class="price-current">₹10,999</span><span class="price-original">₹24,999</span></div><button class="add-cart-btn">+ Add to Cart</button></div></div>
+        <div class="product-card"><div class="product-img bg1" style="height:180px">📱<span class="discount-badge">-35%</span><button class="wishlist-btn">♡</button></div><div class="product-info"><div class="product-name">Samsung Galaxy F55 5G 256GB Apricot Crush</div><div class="product-seller">Samsung Official</div><div class="product-rating"><span class="stars">⭐ 4.3</span><span class="rating-count">(5,100)</span></div><div class="product-price"><span class="price-current">₹19,999</span><span class="price-original">₹30,999</span></div><button class="add-cart-btn">+ Add to Cart</button></div></div>
+        <div class="product-card"><div class="product-img bg2" style="height:180px">📱<span class="discount-badge">-25%</span><button class="wishlist-btn">♡</button></div><div class="product-info"><div class="product-name">Samsung Galaxy S23 FE 128GB Graphite</div><div class="product-seller">Samsung Official</div><div class="product-rating"><span class="stars">⭐ 4.5</span><span class="rating-count">(9,800)</span></div><div class="product-price"><span class="price-current">₹34,999</span><span class="price-original">₹46,999</span></div><button class="add-cart-btn">+ Add to Cart</button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CART PAGE ==================== -->
+<div class="page" id="page-cart">
+  <nav class="navbar">
+    <div class="nav-logo" onclick="showPage('home')">Quit<span>Q</span></div>
+    <div class="nav-search">
+      <select><option>All</option></select>
+      <input type="text" placeholder="Search…">
+      <button>🔍</button>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn"><span class="icon">👤</span><div class="label">Account</div></button>
+    </div>
+  </nav>
+  <div class="cart-layout">
+    <div class="cart-main">
+      <div class="page-title">My Cart <span>(3 items)</span></div>
+      <div class="cart-item">
+        <div class="cart-item-img bg1">📱</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">Samsung Galaxy S24 Ultra 256GB Titanium Black</div>
+          <div class="cart-item-seller">Sold by: Samsung Official Store &nbsp;|&nbsp; <span style="color:var(--green);font-weight:600;">Free Delivery</span></div>
+          <div class="cart-item-price">₹89,999 <span class="orig">₹1,64,999</span></div>
+          <div class="qty-control">
+            <button class="qty-btn">−</button>
+            <span class="qty-num">1</span>
+            <button class="qty-btn">+</button>
+          </div>
+          <div class="cart-item-actions">
+            <button class="cart-action-btn save">💾 Save for Later</button>
+            <button class="cart-action-btn remove">🗑 Remove</button>
+          </div>
+        </div>
+      </div>
+      <div class="cart-item">
+        <div class="cart-item-img bg3">⌚</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">boAt Storm Pro Smartwatch AMOLED</div>
+          <div class="cart-item-seller">Sold by: boAt Lifestyle &nbsp;|&nbsp; <span style="color:var(--green);font-weight:600;">Free Delivery</span></div>
+          <div class="cart-item-price">₹1,999 <span class="orig">₹4,999</span></div>
+          <div class="qty-control">
+            <button class="qty-btn">−</button>
+            <span class="qty-num">2</span>
+            <button class="qty-btn">+</button>
+          </div>
+          <div class="cart-item-actions">
+            <button class="cart-action-btn save">💾 Save for Later</button>
+            <button class="cart-action-btn remove">🗑 Remove</button>
+          </div>
+        </div>
+      </div>
+      <div class="cart-item">
+        <div class="cart-item-img bg4">🎧</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">Sony WH-1000XM5 Wireless Noise Cancelling Headphones</div>
+          <div class="cart-item-seller">Sold by: Sony India &nbsp;|&nbsp; <span style="color:var(--green);font-weight:600;">Free Delivery</span></div>
+          <div class="cart-item-price">₹19,990 <span class="orig">₹33,990</span></div>
+          <div class="qty-control">
+            <button class="qty-btn">−</button>
+            <span class="qty-num">1</span>
+            <button class="qty-btn">+</button>
+          </div>
+          <div class="cart-item-actions">
+            <button class="cart-action-btn save">💾 Save for Later</button>
+            <button class="cart-action-btn remove">🗑 Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cart-sidebar">
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Price (4 items)</span><span class="orig-price">₹2,08,987</span></div>
+        <div class="summary-row"><span>Discount</span><span style="color:var(--green)">− ₹94,999</span></div>
+        <div class="summary-row"><span>Delivery Charges</span><span style="color:var(--green)">FREE</span></div>
+        <div class="summary-row"><span>Platform Fee</span><span>₹99</span></div>
+        <div class="summary-row total"><span>Total Amount</span><span>₹1,14,087</span></div>
+        <div class="savings-banner">🎉 You save ₹94,900 on this order!</div>
+        <button class="checkout-btn" onclick="showPage('checkout')">Proceed to Checkout →</button>
+        <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:12px;">🔒 Safe and Secure Payments</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CHECKOUT PAGE ==================== -->
+<div class="page" id="page-checkout">
+  <nav class="navbar">
+    <div class="nav-logo" onclick="showPage('home')">Quit<span>Q</span></div>
+    <div class="nav-actions">
+      <button class="nav-btn"><span class="icon">🔒</span><div class="label">Secure Checkout</div></button>
+    </div>
+  </nav>
+  <div class="checkout-layout">
+    <div class="step-indicator">
+      <div class="step done"><div class="step-num">✓</div><span class="step-label">Login</span></div>
+      <div class="step-line done"></div>
+      <div class="step active"><div class="step-num">2</div><span class="step-label">Delivery Address</span></div>
+      <div class="step-line"></div>
+      <div class="step pending"><div class="step-num">3</div><span class="step-label">Order Summary</span></div>
+      <div class="step-line"></div>
+      <div class="step pending"><div class="step-num">4</div><span class="step-label">Payment</span></div>
+    </div>
+
+    <div class="checkout-card">
+      <h3>📍 Select Delivery Address</h3>
+      <div class="address-cards">
+        <div class="address-card selected">
+          <div class="addr-name">Rahul Sharma</div>
+          <div class="addr-detail">42, MG Road, Koramangala<br>Bengaluru, Karnataka — 560034<br>📞 +91 98765 43210</div>
+          <div class="addr-tag">HOME</div>
+        </div>
+        <div class="address-card">
+          <div class="addr-name">Rahul Sharma</div>
+          <div class="addr-detail">Tech Park, Outer Ring Road<br>Bengaluru, Karnataka — 560103<br>📞 +91 98765 43210</div>
+          <div class="addr-tag" style="background:var(--primary)">WORK</div>
+        </div>
+      </div>
+      <button style="background:none;border:2px dashed var(--border);border-radius:var(--radius-card);padding:16px 24px;width:100%;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--primary);cursor:pointer;">+ Add New Address</button>
+    </div>
+
+    <div class="checkout-card">
+      <h3>💳 Payment Method</h3>
+      <div class="payment-options">
+        <div class="payment-option selected"><input type="radio" name="pay" checked><div class="pay-icon">📲</div><div><div class="pay-label">UPI</div><div class="pay-sub">GooglePay, PhonePe, Paytm & more</div></div></div>
+        <div class="payment-option"><input type="radio" name="pay"><div class="pay-icon">💳</div><div><div class="pay-label">Credit / Debit Card</div><div class="pay-sub">All major cards accepted</div></div></div>
+        <div class="payment-option"><input type="radio" name="pay"><div class="pay-icon">🏦</div><div><div class="pay-label">Net Banking</div><div class="pay-sub">All major banks supported</div></div></div>
+        <div class="payment-option"><input type="radio" name="pay"><div class="pay-icon">💵</div><div><div class="pay-label">Cash on Delivery</div><div class="pay-sub">Pay when you receive your order</div></div></div>
+      </div>
+    </div>
+
+    <div class="checkout-card" style="background:var(--bg);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:14px;color:var(--text-muted);">Order Total</div>
+          <div style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;">₹1,14,087</div>
+          <div style="color:var(--green);font-size:13px;font-weight:600;">You save ₹94,900 on this order</div>
+        </div>
+        <button class="place-order-btn" style="width:auto;padding:18px 40px;" onclick="showPage('home')">🔒 Place Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SELLER DASHBOARD ==================== -->
+<div class="page" id="page-seller">
+  <div class="dashboard-layout">
+    <div class="dash-sidebar">
+      <div class="dash-brand">
+        <div class="logo">Quit<span>Q</span></div>
+        <div class="role">Seller Portal</div>
+      </div>
+      <div class="dash-nav">
+        <div class="dash-nav-item active"><span class="nav-icon">📊</span> Dashboard</div>
+        <div class="dash-nav-item"><span class="nav-icon">📦</span> My Products</div>
+        <div class="dash-nav-item"><span class="nav-icon">🛍️</span> Orders</div>
+        <div class="dash-nav-item"><span class="nav-icon">📈</span> Sales Reports</div>
+        <div class="dash-nav-item"><span class="nav-icon">💬</span> Reviews</div>
+        <div class="dash-nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+        <div class="dash-nav-item" style="margin-top:auto;" onclick="showPage('login')"><span class="nav-icon">🚪</span> Logout</div>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-header">
+        <h1>Seller Dashboard</h1>
+        <div class="dash-user">
+          <div class="dash-avatar">RS</div>
+          <div><div class="dash-user-name">Rahul's Store</div><div class="dash-user-role">Verified Seller</div></div>
+        </div>
+      </div>
+      <div class="dash-content">
+        <div class="kpi-grid">
+          <div class="kpi-card orange"><div class="kpi-icon">📦</div><div class="kpi-value">1,284</div><div class="kpi-label">Total Products</div><div class="kpi-trend up">↑ 12% this month</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon">🕐</div><div class="kpi-value">47</div><div class="kpi-label">Pending Orders</div><div class="kpi-trend up">↑ 8 new today</div></div>
+          <div class="kpi-card green"><div class="kpi-icon">💰</div><div class="kpi-value">₹4.2L</div><div class="kpi-label">Revenue This Month</div><div class="kpi-trend up">↑ 23% vs last month</div></div>
+          <div class="kpi-card red"><div class="kpi-icon">⚠️</div><div class="kpi-value">18</div><div class="kpi-label">Low Stock Alerts</div><div class="kpi-trend down">↓ 6 critical</div></div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Product Listings</h3>
+            <button class="add-product-btn">+ Add New Product</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="product-thumb-cell"><div class="thumb-mini bg1">📱</div><div><div class="thumb-name">Samsung Galaxy S24</div><div class="thumb-cat">SKU: SAM-S24-256</div></div></div></td>
+                <td>Mobiles</td>
+                <td><span style="font-family:'Space Mono',monospace;font-weight:700;">₹89,999</span></td>
+                <td>42</td>
+                <td><span class="status-badge active">● Active</span></td>
+                <td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button><div class="toggle-switch on"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="product-thumb-cell"><div class="thumb-mini bg3">⌚</div><div><div class="thumb-name">boAt Storm Pro</div><div class="thumb-cat">SKU: BOA-SP-BLK</div></div></div></td>
+                <td>Wearables</td>
+                <td><span style="font-family:'Space Mono',monospace;font-weight:700;">₹1,999</span></td>
+                <td>8</td>
+                <td><span class="status-badge pending">⚠ Low Stock</span></td>
+                <td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button><div class="toggle-switch on"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="product-thumb-cell"><div class="thumb-mini bg4">🎧</div><div><div class="thumb-name">Sony WH-1000XM5</div><div class="thumb-cat">SKU: SON-WH-BLK</div></div></div></td>
+                <td>Audio</td>
+                <td><span style="font-family:'Space Mono',monospace;font-weight:700;">₹19,990</span></td>
+                <td>0</td>
+                <td><span class="status-badge inactive">● Out of Stock</span></td>
+                <td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button><div class="toggle-switch"></div></div></td>
+              </tr>
+              <tr>
+                <td><div class="product-thumb-cell"><div class="thumb-mini bg2">💻</div><div><div class="thumb-name">MacBook Air M3</div><div class="thumb-cat">SKU: APL-MBA-M3</div></div></div></td>
+                <td>Laptops</td>
+                <td><span style="font-family:'Space Mono',monospace;font-weight:700;">₹99,900</span></td>
+                <td>15</td>
+                <td><span class="status-badge active">● Active</span></td>
+                <td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button><div class="toggle-switch on"></div></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>Recent Orders</h3></div>
+          <table class="data-table">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              <tr><td style="font-family:'Space Mono',monospace;font-size:12px;">#QQ-2024-8821</td><td>Priya M.</td><td>Samsung Galaxy S24</td><td>₹89,999</td><td><span class="status-badge shipped">📦 Shipped</span></td><td>20 Mar 2024</td></tr>
+              <tr><td style="font-family:'Space Mono',monospace;font-size:12px;">#QQ-2024-8820</td><td>Arjun K.</td><td>boAt Storm Pro</td><td>₹1,999</td><td><span class="status-badge delivered">✅ Delivered</span></td><td>19 Mar 2024</td></tr>
+              <tr><td style="font-family:'Space Mono',monospace;font-size:12px;">#QQ-2024-8819</td><td>Sneha R.</td><td>Sony WH-1000XM5</td><td>₹19,990</td><td><span class="status-badge pending">⏳ Processing</span></td><td>19 Mar 2024</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN DASHBOARD ==================== -->
+<div class="page" id="page-admin">
+  <div class="dashboard-layout">
+    <div class="dash-sidebar">
+      <div class="dash-brand">
+        <div class="logo">Quit<span>Q</span></div>
+        <div class="role">Admin Control Panel</div>
+      </div>
+      <div class="dash-nav">
+        <div class="dash-nav-item active"><span class="nav-icon">📊</span> Overview</div>
+        <div class="dash-nav-item"><span class="nav-icon">👥</span> Users</div>
+        <div class="dash-nav-item"><span class="nav-icon">🏪</span> Sellers</div>
+        <div class="dash-nav-item"><span class="nav-icon">🏷️</span> Categories</div>
+        <div class="dash-nav-item"><span class="nav-icon">📋</span> Reports</div>
+        <div class="dash-nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+        <div class="dash-nav-item" onclick="showPage('login')"><span class="nav-icon">🚪</span> Logout</div>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-header">
+        <h1>Admin Dashboard</h1>
+        <div class="dash-user">
+          <div class="dash-avatar" style="background:linear-gradient(135deg,var(--navy),var(--navy-light))">A</div>
+          <div><div class="dash-user-name">Admin User</div><div class="dash-user-role">Super Administrator</div></div>
+        </div>
+      </div>
+      <div class="dash-content">
+        <div class="kpi-grid">
+          <div class="kpi-card orange"><div class="kpi-icon">👥</div><div class="kpi-value">1,24,830</div><div class="kpi-label">Total Users</div><div class="kpi-trend up">↑ 1,240 this week</div></div>
+          <div class="kpi-card navy" style="--navy:#1A1D2E"><div class="kpi-icon">🏪</div><div class="kpi-value">4,210</div><div class="kpi-label">Active Sellers</div><div class="kpi-trend up">↑ 84 this month</div></div>
+          <div class="kpi-card green"><div class="kpi-icon">🛍️</div><div class="kpi-value">89,400</div><div class="kpi-label">Total Orders</div><div class="kpi-trend up">↑ 18% this month</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon">💰</div><div class="kpi-value">₹2.8Cr</div><div class="kpi-label">Total Revenue</div><div class="kpi-trend up">↑ 32% YoY</div></div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>User Management</h3><button class="add-product-btn" style="background:var(--navy)">+ Add User</button></div>
+          <table class="data-table">
+            <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><div class="product-thumb-cell"><div class="dash-avatar" style="width:36px;height:36px;font-size:13px;">PS</div><div><div class="thumb-name">Priya Sharma</div></div></div></td><td>priya@email.com</td><td><span class="status-badge active">Buyer</span></td><td>Jan 12, 2024</td><td><span class="status-badge active">● Active</span></td><td><div class="action-btns"><button class="action-btn delete">🗑️</button></div></td></tr>
+              <tr><td><div class="product-thumb-cell"><div class="dash-avatar" style="width:36px;height:36px;font-size:13px;background:linear-gradient(135deg,var(--green),#00A87D);">AK</div><div><div class="thumb-name">Arjun Kumar</div></div></div></td><td>arjun@store.com</td><td><span class="status-badge shipped">Seller</span></td><td>Feb 8, 2024</td><td><span class="status-badge active">● Active</span></td><td><div class="action-btns"><button class="action-btn delete">🗑️</button></div></td></tr>
+              <tr><td><div class="product-thumb-cell"><div class="dash-avatar" style="width:36px;height:36px;font-size:13px;background:linear-gradient(135deg,var(--amber),#E07B00);">SR</div><div><div class="thumb-name">Sneha Reddy</div></div></div></td><td>sneha@email.com</td><td><span class="status-badge active">Buyer</span></td><td>Mar 1, 2024</td><td><span class="status-badge inactive">● Suspended</span></td><td><div class="action-btns"><button class="action-btn delete">🗑️</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>Category Management</h3><button class="add-product-btn">+ Add Category</button></div>
+          <table class="data-table">
+            <thead><tr><th>Category</th><th>Products</th><th>Sellers</th><th>Revenue</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><div style="display:flex;align-items:center;gap:10px;font-size:20px;">⚡ <span style="font-size:14px;font-weight:600;">Electronics</span></div></td><td>12,400</td><td>840</td><td>₹68.4L</td><td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button></div></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:10px;font-size:20px;">👗 <span style="font-size:14px;font-weight:600;">Fashion</span></div></td><td>85,200</td><td>2,100</td><td>₹42.1L</td><td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button></div></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:10px;font-size:20px;">📱 <span style="font-size:14px;font-weight:600;">Mobiles</span></div></td><td>3,800</td><td>320</td><td>₹1.2Cr</td><td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button></div></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:10px;font-size:20px;">🛋️ <span style="font-size:14px;font-weight:600;">Home & Furniture</span></div></td><td>22,000</td><td>680</td><td>₹31.8L</td><td><div class="action-btns"><button class="action-btn edit">✏️</button><button class="action-btn delete">🗑️</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Page Navigation
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('.demo-nav button').forEach((btn, i) => {
+    btn.classList.remove('active');
+  });
+  const pages = ['home','register','login','listing','cart','checkout','seller','admin'];
+  const idx = pages.indexOf(pageId);
+  if (idx >= 0) document.querySelectorAll('.demo-nav button')[idx].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// Password Toggle
+function togglePwd(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+// Password Strength
+function updateStrength(val) {
+  const segs = ['s1','s2','s3','s4'];
+  const label = document.getElementById('strength-label');
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const classes = ['','weak','fair','strong','strong'];
+  const labels = ['Enter a password','Weak','Fair','Strong','Very Strong'];
+  const colors = ['','var(--red)','var(--amber)','var(--green)','var(--green)'];
+  segs.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'strength-seg' + (i < score ? ' ' + classes[score] : '');
+  });
+  label.textContent = val ? labels[score] : 'Enter a password';
+  label.style.color = colors[score] || 'var(--text-muted)';
+}
+
+// Timer
+function updateTimer() {
+  const now = new Date();
+  let h = document.getElementById('hours');
+  let m = document.getElementById('mins');
+  let s = document.getElementById('secs');
+  if (!h) return;
+  let sec = parseInt(s.textContent) - 1;
+  let min = parseInt(m.textContent);
+  let hr = parseInt(h.textContent);
+  if (sec < 0) { sec = 59; min--; }
+  if (min < 0) { min = 59; hr--; }
+  if (hr < 0) { hr = 23; min = 59; sec = 59; }
+  h.textContent = String(hr).padStart(2,'0');
+  m.textContent = String(min).padStart(2,'0');
+  s.textContent = String(sec).padStart(2,'0');
+}
+setInterval(updateTimer, 1000);
+</script>
+</body>
+</html>
